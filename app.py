@@ -75,17 +75,15 @@ try:
         # Menampilkan Stepper Dinamis dengan mengirimkan current_step
         st.markdown(render_stepper(st.session_state['current_step']), unsafe_allow_html=True)
 
-        # Langkah 1: Upload dan Input Tahun
-        st.markdown('<p class="kua-section-title">Langkah 1 · Upload data dan tentukan tahun</p><p class="kua-section-caption">Siapkan file Excel dan folder tahun yang akan dicari di Google Drive.</p>', unsafe_allow_html=True)
-        st.markdown('<div class="kua-panel">', unsafe_allow_html=True)
-        st.markdown('<div class="kua-panel-head"><div class="kua-step-badge">01</div><div><p class="kua-panel-title">Upload Data Excel</p><p class="kua-panel-copy">Gunakan file .xlsx berisi data akta nikah yang akan diproses.</p></div></div>', unsafe_allow_html=True)
+# Bagian Upload Data Excel
+        st.markdown('<div class="kua-panel-head" style="margin-top: 1.5rem;"><div class="kua-step-badge">01</div><div><p class="kua-panel-title">Upload Data Excel</p><p class="kua-panel-copy">Gunakan file .xlsx berisi data akta nikah yang akan diproses.</p></div></div>', unsafe_allow_html=True)
+        
         col1, col2 = st.columns([2, 1], gap="large")
 
         with col1:
             uploaded_file = st.file_uploader("Upload File Excel", type=["xlsx"], help="Tarik file ke area ini atau pilih dari perangkat.")
         with col2:
             tahun_target = st.text_input("Tahun Target Folder", value="2018", help="Folder Google Drive akan dicari berdasarkan tahun yang dipilih.")
-        st.markdown('</div>', unsafe_allow_html=True)
 
         if uploaded_file is not None:
             # Pemicu Langkah 2: Saat file berhasil masuk, state berubah ke Langkah 2
