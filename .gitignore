@@ -1,0 +1,6 @@
+env/
+__pycache__/
+credentials.json
+.streamlit/secrets.toml
+.DS_Store
+.streamlit/
