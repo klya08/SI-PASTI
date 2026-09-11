@@ -4,7 +4,6 @@ def inject_tailwind_and_fonts():
 
 .stApp { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1f2937; }
 
-/* KUNCI PERBAIKAN 1: Pangkas jarak atas bawaan Streamlit untuk Desktop */
 .block-container { padding-top: 2rem !important; }
 
 [data-testid="stSidebar"] { background-color: #ffffff !important; border-right: 1px solid #e5e7eb; }
@@ -26,7 +25,6 @@ def inject_tailwind_and_fonts():
 
 .hero-card { background: #ffffff; border-radius: 16px; padding: 24px 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
 .hero-content-left { display: flex; align-items: center; gap: 24px; }
-.hero-icon-box { background: #ecfdf5; color: #059669; min-width: 64px; height: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .hero-title { font-size: 26px; font-weight: 800; color: #064e3b; margin: 0; line-height: 1.2; }
 .hero-subtitle { font-size: 15px; color: #6b7280; margin: 6px 0 0 0; }
 .status-badge { display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; margin-top: 12px; border: 1px solid #a7f3d0; }
@@ -56,14 +54,10 @@ def inject_tailwind_and_fonts():
 .stButton button[kind="primary"]:hover { background-color: #047857 !important; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2); }
 [data-testid="stMetricValue"] { font-weight: 800 !important; color: #064e3b !important; }
 
-/* ========================================= */
-/* KUNCI PERBAIKAN 2: Pangkas lebih sadis di Layar HP */
-/* ========================================= */
 @media (max-width: 768px) {
     .block-container { padding-top: 1rem !important; }
     .hero-card { flex-direction: column; text-align: center; gap: 20px; padding: 24px 16px; margin-bottom: 24px; }
     .hero-content-left { flex-direction: column; text-align: center; gap: 16px; }
-    .hero-icon-box { margin: 0 auto; }
     .hero-title { font-size: 22px; }
     .status-badge { justify-content: center; }
     
@@ -98,15 +92,12 @@ def render_user_profile(name):
 </div>
 </div>"""
 
+# KUNCI PERUBAHAN: Logo sekarang ditaruh di sebelah kiri sebagai penanda utama, bukan di kanan lagi
 def render_header(img_base64=""):
-    logo_html = f'<img src="data:image/png;base64,{img_base64}" width="100" style="opacity: 0.9;">' if img_base64 else ""
+    logo_html = f'<img src="data:image/png;base64,{img_base64}" width="75" style="flex-shrink: 0; margin-right: 5px;">' if img_base64 else ""
     return f"""<div class="hero-card">
 <div class="hero-content-left">
-<div class="hero-icon-box">
-<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-</svg>
-</div>
+{logo_html}
 <div>
 <h1 class="hero-title">Digitalisasi Arsip Akta Nikah KUA</h1>
 <p class="hero-subtitle">Sistem digital untuk pencocokan arsip nikah dengan data Excel dan Google Drive.</p>
@@ -115,7 +106,6 @@ def render_header(img_base64=""):
 </div>
 </div>
 </div>
-{logo_html}
 </div>"""
 
 def render_stepper(current_step):
