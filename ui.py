@@ -4,6 +4,9 @@ def inject_tailwind_and_fonts():
 
 .stApp { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1f2937; }
 
+/* KUNCI PERBAIKAN 1: Pangkas jarak atas bawaan Streamlit untuk Desktop */
+.block-container { padding-top: 2rem !important; }
+
 [data-testid="stSidebar"] { background-color: #ffffff !important; border-right: 1px solid #e5e7eb; }
 .sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 10px 0 20px 0; margin-bottom: 20px; }
 .sidebar-brand svg { width: 32px; height: 32px; color: #059669; flex-shrink: 0; }
@@ -54,17 +57,18 @@ def inject_tailwind_and_fonts():
 [data-testid="stMetricValue"] { font-weight: 800 !important; color: #064e3b !important; }
 
 /* ========================================= */
-/* KUNCI PERBAIKAN: RESPONSIVE DESIGN (MOBILE) */
+/* KUNCI PERBAIKAN 2: Pangkas lebih sadis di Layar HP */
 /* ========================================= */
 @media (max-width: 768px) {
-    .hero-card { flex-direction: column; text-align: center; gap: 20px; padding: 24px 16px; }
+    .block-container { padding-top: 1rem !important; }
+    .hero-card { flex-direction: column; text-align: center; gap: 20px; padding: 24px 16px; margin-bottom: 24px; }
     .hero-content-left { flex-direction: column; text-align: center; gap: 16px; }
     .hero-icon-box { margin: 0 auto; }
     .hero-title { font-size: 22px; }
     .status-badge { justify-content: center; }
     
-    .stepper-container { flex-wrap: wrap; justify-content: center; gap: 12px; }
-    .stepper-line { display: none; } /* Sembunyikan garis tipis di HP agar rapi */
+    .stepper-container { flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 24px; }
+    .stepper-line { display: none; }
     .step-item { background: transparent; padding: 0; }
     
     .section-wrapper { padding: 20px 16px; }
