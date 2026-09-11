@@ -102,7 +102,7 @@ try:
         st.sidebar.markdown('<p class="kua-sidebar-label">Panel kontrol</p>', unsafe_allow_html=True)
         st.sidebar.markdown('<div class="kua-side-note">Unggah data Excel dan tentukan tahun folder untuk memulai pencarian arsip.</div>', unsafe_allow_html=True)
 
-        st.markdown(render_header(img_base64), unsafe_allow_html=True)
+        st.markdown(render_header(), unsafe_allow_html=True)
         st.markdown(render_stepper(st.session_state['current_step']), unsafe_allow_html=True)
 
         # --- LANGKAH 1 ---
