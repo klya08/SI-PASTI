@@ -23,7 +23,7 @@ def inject_tailwind_and_fonts():
 
 .hero-card { background: #ffffff; border-radius: 16px; padding: 24px 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
 .hero-content-left { display: flex; align-items: center; gap: 24px; }
-.hero-icon-box { background: #ecfdf5; color: #059669; min-width: 64px; height: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+.hero-icon-box { background: #ecfdf5; color: #059669; min-width: 64px; height: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .hero-title { font-size: 26px; font-weight: 800; color: #064e3b; margin: 0; line-height: 1.2; }
 .hero-subtitle { font-size: 15px; color: #6b7280; margin: 6px 0 0 0; }
 .status-badge { display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; margin-top: 12px; border: 1px solid #a7f3d0; }
@@ -33,7 +33,7 @@ def inject_tailwind_and_fonts():
 .stepper-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; position: relative; padding: 0 10px; }
 .stepper-line { position: absolute; top: 14px; left: 20px; right: 20px; height: 2px; background: #e5e7eb; z-index: 1; }
 .step-item { position: relative; z-index: 2; display: flex; flex-direction: row; align-items: center; gap: 10px; background: #f8fafc; padding: 0 10px; }
-.step-circle { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid #e5e7eb; background: #ffffff; color: #9ca3af; transition: all 0.3s ease; }
+.step-circle { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid #e5e7eb; background: #ffffff; color: #9ca3af; transition: all 0.3s ease; flex-shrink: 0; }
 .step-label { font-size: 14px; font-weight: 600; color: #9ca3af; }
 .step-item.active .step-circle { border-color: #059669; background: #059669; color: #ffffff; box-shadow: 0 0 0 4px #ecfdf5; }
 .step-item.active .step-label { color: #064e3b; }
@@ -52,6 +52,23 @@ def inject_tailwind_and_fonts():
 .stButton button[kind="primary"] { background-color: #059669 !important; color: white !important; border-radius: 8px !important; font-weight: 600 !important; padding: 10px 24px !important; border: none !important; transition: transform 0.1s ease, background-color 0.2s ease !important; }
 .stButton button[kind="primary"]:hover { background-color: #047857 !important; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2); }
 [data-testid="stMetricValue"] { font-weight: 800 !important; color: #064e3b !important; }
+
+/* ========================================= */
+/* KUNCI PERBAIKAN: RESPONSIVE DESIGN (MOBILE) */
+/* ========================================= */
+@media (max-width: 768px) {
+    .hero-card { flex-direction: column; text-align: center; gap: 20px; padding: 24px 16px; }
+    .hero-content-left { flex-direction: column; text-align: center; gap: 16px; }
+    .hero-icon-box { margin: 0 auto; }
+    .hero-title { font-size: 22px; }
+    .status-badge { justify-content: center; }
+    
+    .stepper-container { flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .stepper-line { display: none; } /* Sembunyikan garis tipis di HP agar rapi */
+    .step-item { background: transparent; padding: 0; }
+    
+    .section-wrapper { padding: 20px 16px; }
+}
 </style>"""
 
 def render_sidebar_brand():
