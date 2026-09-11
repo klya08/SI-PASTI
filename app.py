@@ -43,18 +43,12 @@ try:
         preauthorized
     )
 
-    # ==========================================
-    # HALAMAN LOGIN
-    # ==========================================
     if not st.session_state.get("authentication_status"):
-        # KUNCI PERBAIKAN: Mengurung form login di dalam container kosong
         login_container = st.empty()
         with login_container.container():
             col_kiri, col_tengah, col_kanan = st.columns([1, 1.5, 1])
-            
             with col_tengah:
                 img_tag = f'<img src="data:image/png;base64,{img_base64}" width="125" style="margin-bottom: -30px; position: relative; z-index: 1;">' if img_base64 else ""
-                
                 st.markdown(f"""<div style='text-align: center; margin-top: 5px; margin-bottom: 12px;'>
 {img_tag}
 <h2 style='font-weight: 800; font-size: 28px; color: #064e3b; margin-top: 0px; margin-bottom: 2px; letter-spacing: 1.5px; position: relative; z-index: 2;'>SI-PASTI</h2>
@@ -62,23 +56,16 @@ try:
 </div>""", unsafe_allow_html=True)
                 
                 authenticator.login()
-
                 if st.session_state.get("authentication_status") == False:
                     st.error('❌ Username atau password salah! Silakan coba lagi.')
                 elif st.session_state.get("authentication_status") == None:
                     st.info('🔒 Silakan masukkan username dan password untuk mengakses Arsip KUA.')
         
-        # JIKA status tiba-tiba jadi True karena "Cookie" tanpa memuat ulang halaman,
-        # kita hapus kontainer logonya dan paksa halaman untuk merender ulang!
         if st.session_state.get("authentication_status") == True:
             login_container.empty()
             st.rerun()
             
-    # ==========================================
-    # HALAMAN DASHBOARD UTAMA
-    # ==========================================
     if st.session_state.get("authentication_status") == True:
-        
         if 'has_logged_in' not in st.session_state:
             loading_html = f"""<style>
 .fifa-loader-overlay {{ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #050a07; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: fadeOutOverlay 0.5s ease-in-out 2.5s forwards; }}
@@ -102,10 +89,9 @@ try:
         st.sidebar.markdown('<p class="kua-sidebar-label">Panel kontrol</p>', unsafe_allow_html=True)
         st.sidebar.markdown('<div class="kua-side-note">Unggah data Excel dan tentukan tahun folder untuk memulai pencarian arsip.</div>', unsafe_allow_html=True)
 
-        st.markdown(render_header(), unsafe_allow_html=True)
+        st.markdown(render_header(img_base64), unsafe_allow_html=True)
         st.markdown(render_stepper(st.session_state['current_step']), unsafe_allow_html=True)
 
-        # --- LANGKAH 1 ---
         st.markdown("""<div class="section-wrapper">
 <div class="section-header">
 <h2 class="section-title">
@@ -116,22 +102,18 @@ Langkah 1 · Upload Data Excel
 </div>""", unsafe_allow_html=True)
         
         col1, col2 = st.columns([2, 1], gap="large")
-
         with col1:
             uploaded_file = st.file_uploader("Pilih file Excel", type=["xlsx"], help="Tarik file ke area ini atau pilih dari perangkat.")
         with col2:
             tahun_target = st.text_input("Tahun Target Folder", value="2018", help="Folder Google Drive akan dicari berdasarkan tahun yang dipilih.")
-            
         st.markdown('</div>', unsafe_allow_html=True)
 
         if uploaded_file is not None:
             st.session_state['current_step'] = 2
-
             try:
                 df = pd.read_excel(uploaded_file)
                 st.info(f"📊 Ditemukan **{len(df)} baris data** di dalam file Excel yang siap diproses.")
                 
-                # --- LANGKAH 2 ---
                 st.markdown("""<div class="section-wrapper">
 <div class="section-header">
 <h2 class="section-title">
@@ -151,18 +133,14 @@ Langkah 2 · Proses Pencocokan
                                 st.error("Gagal terhubung ke Google Drive. Periksa 'credentials.json'.")
                             else:
                                 target_folder_id = get_folder_id_by_name(service, tahun_target)
-                                
                                 if not target_folder_id:
                                     st.error(f"❌ Folder '{tahun_target}' TIDAK DITEMUKAN di Google Drive KUA.")
                                 else:
                                     st.success(f"✅ Folder '{tahun_target}' ditemukan secara otomatis!")
-                                    
                                     with st.spinner(f"Memindai seluruh isi PDF di dalam folder {tahun_target}..."):
                                         pdf_list = get_pdfs_by_folder(service, target_folder_id)
-                                    
                                     if len(pdf_list) > 0:
                                         st.info(f"📁 Berhasil mengumpulkan **{len(pdf_list)} file PDF** dari Google Drive.")
-                                        
                                         with st.spinner("Sedang mencocokkan data..."):
                                             results_data = []
                                             for index, row in df.iterrows():
@@ -172,31 +150,24 @@ Langkah 2 · Proses Pencocokan
                                                 row_dict['FILE_PDF_DRIVE'] = match_res['pdf_name']
                                                 row_dict['LINK_AKTA_GDRIVE'] = match_res['pdf_link']
                                                 results_data.append(row_dict)
-                                            
                                             result_df = pd.DataFrame(results_data)
-                                            
                                             for col in result_df.select_dtypes(include=['datetime64[ns]', 'datetime64']).columns:
                                                 result_df[col] = result_df[col].dt.strftime('%d/%m/%Y')
-                                                
                                             if 'TGLNIKAHMASEHI' in result_df.columns:
                                                 try:
                                                     result_df['TGLNIKAHMASEHI'] = pd.to_datetime(result_df['TGLNIKAHMASEHI']).dt.strftime('%d/%m/%Y')
                                                 except:
                                                     pass
-                                            
                                             st.session_state['result_df'] = result_df
-                                            
                                         st.session_state['current_step'] = 4
                                         st.rerun() 
                                     else:
                                         st.warning(f"Folder '{tahun_target}' ditemukan, tetapi tidak ada file PDF di dalamnya.")
-                
                 st.markdown('</div>', unsafe_allow_html=True)
                 
                 # --- LANGKAH 3 ---
                 if 'result_df' in st.session_state:
                     res_df = st.session_state['result_df']
-                    
                     st.markdown("""<div class="section-wrapper">
 <div class="section-header">
 <h2 class="section-title">
@@ -205,7 +176,6 @@ Langkah 3 · Review dan Unduh
 </h2>
 <p class="section-caption">Tinjau hasil pencocokan di bawah, lakukan penyesuaian bila diperlukan, lalu unduh laporannya.</p>
 </div>""", unsafe_allow_html=True)
-                    
                     tot_data = len(res_df)
                     tot_match = len(res_df[res_df['STATUS_MATCH'] == 'MATCHED'])
                     tot_notfound = len(res_df[res_df['STATUS_MATCH'] == 'NOT FOUND'])
@@ -228,18 +198,14 @@ Langkah 3 · Review dan Unduh
                         use_container_width=True,
                         height=400,
                     )
-                    
                     st.write("<br>", unsafe_allow_html=True) 
-                    
                     nama_file_kustom = st.text_input("Nama File Laporan (Tanpa spasi dianjurkan):", value=f"Laporan_Hasil_Pencocokan_{tahun_target}.xlsx")
                     if not nama_file_kustom.endswith(".xlsx"):
                         nama_file_kustom += ".xlsx"
-                    
                     output = BytesIO()
                     with pd.ExcelWriter(output, engine='openpyxl') as writer:
                         edited_df.to_excel(writer, index=False, sheet_name='Laporan_Akta')
                     processed_data = output.getvalue()
-                    
                     st.download_button(
                         label=f"📥 Download Laporan Final",
                         data=processed_data,
@@ -248,10 +214,8 @@ Langkah 3 · Review dan Unduh
                         type="primary"
                     )
                     st.markdown('</div>', unsafe_allow_html=True)
-                    
             except Exception as e:
                 st.error(f"Terjadi kesalahan saat memproses data: {e}")
-        
         else:
             if st.session_state['current_step'] != 1:
                 st.session_state['current_step'] = 1

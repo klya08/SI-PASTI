@@ -2,7 +2,6 @@ def inject_tailwind_and_fonts():
     return """<style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* CSS dijinakkan agar tidak merusak form Streamlit */
 .stApp { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1f2937; }
 
 [data-testid="stSidebar"] { background-color: #ffffff !important; border-right: 1px solid #e5e7eb; }
@@ -73,12 +72,11 @@ def render_user_profile(name):
 <div class="profile-info">
 <span class="profile-name">{name}</span>
 <span class="profile-role">
-<div class="online-dot"></div> Admin Sistem
+<div class="online-dot"></div> Petugas KUA
 </span>
 </div>
 </div>"""
 
-# INI BAGIAN YANG TADI TERLEWAT: render_header sekarang SIAP menerima img_base64
 def render_header(img_base64=""):
     logo_html = f'<img src="data:image/png;base64,{img_base64}" width="100" style="opacity: 0.9;">' if img_base64 else ""
     return f"""<div class="hero-card">
@@ -110,14 +108,8 @@ def render_stepper(current_step):
     html = '<div class="stepper-container"><div class="stepper-line"></div>'
     for i, step in enumerate(steps):
         step_val = i + 1
-        status_class = ""
-        if step_val == current_step:
-            status_class = "active"
-        elif step_val < current_step:
-            status_class = "completed"
-            
+        status_class = "active" if step_val == current_step else "completed" if step_val < current_step else ""
         html += f'<div class="step-item {status_class}"><div class="step-circle">{step["num"]}</div><div class="step-label">{step["label"]}</div></div>'
-    
     html += '</div>'
     return html
 
