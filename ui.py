@@ -1,120 +1,127 @@
-# ==========================================
-# KUA DIGITAL UI (PRESENTATION ONLY)
-# ==========================================
-
 def inject_tailwind_and_fonts():
-    return """
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        :root { --kua-green: #166534; --kua-dark: #14532d; --kua-emerald: #059669; --kua-soft: #dcfce7; --kua-bg: #f8fafc; --kua-text: #1e293b; --kua-muted: #64748b; --kua-border: #e2e8f0; }
-        html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; color: var(--kua-text); }
-        .stApp { background: #f0fdf4 !important; }
-        /* Override form login streamlit-authenticator */
-        [data-testid="stForm"] { background: #ffffff !important; border: 1px solid #bbf7d0 !important; border-radius: 18px !important; box-shadow: 0 12px 30px rgba(22, 101, 52, .08) !important; padding: 1.5rem !important; }
-        [data-testid="stTextInput"] input, .stTextInput input { background: #ffffff !important; border: 1px solid #86efac !important; border-radius: 10px !important; color: #14532d !important; }
-        [data-testid="stTextInput"] input:focus, .stTextInput input:focus { border-color: #059669 !important; box-shadow: 0 0 0 2px rgba(5, 150, 105, .18) !important; outline: none !important; }
-        [data-testid="stForm"] .stButton > button, [data-testid="stForm"] button[kind="primary"], .stButton > button[kind="primary"] { background: #059669 !important; border: 1px solid #059669 !important; border-radius: 10px !important; color: #ffffff !important; font-weight: 700 !important; }
-        [data-testid="stForm"] .stButton > button:hover, [data-testid="stForm"] button[kind="primary"]:hover, .stButton > button[kind="primary"]:hover { background: #047857 !important; border-color: #047857 !important; color: #ffffff !important; }
-        [data-testid="stAlert"]:has(svg[data-testid="stAlertIconInfo"]), [data-baseweb="notification"] { background: #ecfdf5 !important; border: 1px solid #86efac !important; border-radius: 10px !important; color: #14532d !important; }
-        [data-testid="stAlert"]:has(svg[data-testid="stAlertIconInfo"]) p, [data-baseweb="notification"] p { color: #14532d !important; }
-        [data-testid="stSidebar"] { background: #fff; border-right: 1px solid var(--kua-border); }
-        [data-testid="stSidebar"] > div:first-child { padding: 1.25rem 1rem; }
-        [data-testid="stSidebar"] .stButton > button { width: 100%; justify-content: flex-start; }
-        .block-container { max-width: 1440px; padding: 2.25rem 3rem 3rem; }
-        .kua-brand { padding: .2rem .25rem 1.5rem; border-bottom: 1px solid var(--kua-border); margin-bottom: 1.35rem; }
-        .kua-brand-mark, .kua-hero-mark { display: inline-flex; align-items: center; justify-content: center; background: var(--kua-green); color: white; border-radius: 12px; font-size: 1.45rem; font-weight: 700; }
-        .kua-brand-mark { width: 42px; height: 42px; margin-bottom: .8rem; }
-        .kua-brand-title { color: var(--kua-dark); font-size: 1rem; font-weight: 700; letter-spacing: .04em; margin: 0; }
-        .kua-brand-subtitle, .kua-profile-status { color: var(--kua-muted); font-size: .72rem; margin: .25rem 0 0; }
-        .kua-profile { display: flex; gap: .75rem; align-items: center; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px; padding: .8rem; margin: 0 0 1.35rem; }
-        .kua-avatar { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 50%; background: var(--kua-soft); color: var(--kua-green); font-weight: 700; }
-        .kua-profile-name { color: var(--kua-dark); font-size: .82rem; font-weight: 600; margin: 0; }
-        .kua-online { color: var(--kua-emerald); font-size: .7rem; font-weight: 600; margin-left: .2rem; }
-        .kua-sidebar-label { color: var(--kua-muted); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 1.25rem .25rem .55rem; }
-        .kua-side-note { color: var(--kua-muted); background: var(--kua-bg); border: 1px solid var(--kua-border); border-radius: 12px; padding: .8rem; font-size: .74rem; line-height: 1.5; }
-        .kua-banner { display: flex; align-items: center; gap: 1.1rem; background: #fff; border: 1px solid #bbf7d0; border-left: 5px solid var(--kua-green); border-radius: 18px; padding: 1.5rem 1.7rem; margin-bottom: 1.5rem; box-shadow: 0 8px 24px rgba(15, 23, 42, .05); }
-        .kua-hero-mark { width: 58px; height: 58px; font-size: 1.8rem; flex: 0 0 auto; }
-        .kua-eyebrow { color: var(--kua-emerald); font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 .35rem; }
-        .kua-title { color: var(--kua-dark); font-size: clamp(1.45rem, 2.5vw, 2rem); font-weight: 700; line-height: 1.2; margin: 0; }
-        .kua-subtitle { color: var(--kua-muted); font-size: .9rem; margin: .45rem 0 0; }
-        .kua-status { color: var(--kua-emerald); font-size: .72rem; font-weight: 600; margin-top: .75rem; }
-        .kua-status::before { content: '●'; margin-right: .35rem; }
-        .kua-section-title { color: var(--kua-dark); font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 .25rem; }
-        .kua-section-caption { color: var(--kua-muted); font-size: .82rem; margin: 0 0 1rem; }
-        .kua-stepper { display: flex; gap: .45rem; align-items: center; margin: .3rem 0 1.5rem; color: #94a3b8; font-size: .74rem; font-weight: 600; }
-        .kua-step { display: flex; align-items: center; gap: .35rem; white-space: nowrap; }
-        .kua-step.active { color: var(--kua-green); }
-        .kua-step-number { display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid #cbd5e1; border-radius: 50%; }
-        .kua-step.active .kua-step-number { background: var(--kua-green); border-color: var(--kua-green); color: white; }
-        .kua-step-line { height: 1px; flex: 1; min-width: 18px; background: #cbd5e1; }
-        .kua-panel { background: #fff; border: 1px solid var(--kua-border); border-radius: 16px; padding: 1.35rem; box-shadow: 0 5px 20px rgba(15, 23, 42, .035); }
-        .kua-panel-head { display: flex; gap: .75rem; align-items: flex-start; margin-bottom: 1rem; }
-        .kua-step-badge { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--kua-soft); color: var(--kua-green); font-weight: 700; font-size: .78rem; }
-        .kua-panel-title { color: var(--kua-dark); font-weight: 700; margin: 0; font-size: 1rem; }
-        .kua-panel-copy { color: var(--kua-muted); margin: .25rem 0 0; font-size: .78rem; }
-        .kua-help { color: var(--kua-muted); font-size: .72rem; margin: -.55rem 0 1rem; }
-        .kua-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin: .75rem 0 1.5rem; }
-        .kua-card { background: #fff; border: 1px solid var(--kua-border); border-radius: 14px; padding: 1.15rem 1.25rem; box-shadow: 0 5px 18px rgba(15, 23, 42, .035); position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s; }
-        .kua-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(15, 23, 42, .07); }
-        .kua-accent-green, .kua-accent-red, .kua-accent-yellow, .kua-accent-slate { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
-        .kua-accent-green { background: var(--kua-emerald); } .kua-accent-red { background: #e11d48; } .kua-accent-yellow { background: #d97706; } .kua-accent-slate { background: #94a3b8; }
-        .kua-metric-title { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 .45rem; }
-        .text-slate { color: var(--kua-muted); } .text-green { color: var(--kua-emerald); } .text-red { color: #be123c; } .text-yellow { color: #b45309; }
-        .kua-metric-val { color: var(--kua-dark); font-size: 1.75rem; font-weight: 700; margin: 0; }
-        .kua-divider { width: 100%; height: 1px; background: var(--kua-border); margin: 1.6rem 0; }
-        .stButton > button, .stDownloadButton > button { border-radius: 10px; min-height: 2.55rem; font-weight: 600; transition: transform .2s, box-shadow .2s, border-color .2s; }
-        .stButton > button:hover, .stDownloadButton > button:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(22, 101, 52, .15); }
-        [data-testid="stFileUploaderDropzone"] { border: 1px dashed #86efac; border-radius: 12px; background: #f0fdf4; }
-        [data-testid="stFileUploaderDropzone"]:hover { border-color: var(--kua-emerald); background: #ecfdf5; }
-        [data-testid="stTextInput"] input { border-radius: 10px; }
-        @media (max-width: 700px) { .block-container { padding: 1.25rem 1rem 2rem; } .kua-banner { padding: 1.1rem; } .kua-hero-mark { width: 46px; height: 46px; font-size: 1.4rem; } .kua-stepper { overflow-x: auto; padding-bottom: .35rem; } .kua-step-line { min-width: 10px; } }
-    </style>
-    """
+    return """<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* CSS dijinakkan agar tidak merusak form Streamlit */
+.stApp { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1f2937; }
+
+[data-testid="stSidebar"] { background-color: #ffffff !important; border-right: 1px solid #e5e7eb; }
+.sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 10px 0 20px 0; margin-bottom: 20px; }
+.sidebar-brand svg { width: 32px; height: 32px; color: #059669; flex-shrink: 0; }
+.sidebar-brand-text { font-weight: 800; font-size: 16px; color: #064e3b; letter-spacing: 0.5px; line-height: 1.2; }
+.sidebar-brand-sub { font-size: 12px; font-weight: 500; color: #6b7280; }
+
+.sidebar-profile { background: #ffffff; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 32px; transition: border-color 0.2s; }
+.sidebar-profile:hover { border-color: #059669; }
+.profile-avatar { width: 42px; height: 42px; border-radius: 50%; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0; }
+.profile-info { display: flex; flex-direction: column; }
+.profile-name { font-weight: 700; font-size: 14px; color: #111827; }
+.profile-role { font-size: 12px; color: #6b7280; display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+.online-dot { width: 6px; height: 6px; background-color: #10b981; border-radius: 50%; }
+
+.kua-sidebar-label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.kua-side-note { font-size: 13px; color: #6b7280; line-height: 1.5; background: #f3f4f6; padding: 12px; border-radius: 8px; }
+
+.hero-card { background: #ffffff; border-radius: 16px; padding: 24px 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.hero-content-left { display: flex; align-items: center; gap: 24px; }
+.hero-icon-box { background: #ecfdf5; color: #059669; min-width: 64px; height: 64px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+.hero-title { font-size: 26px; font-weight: 800; color: #064e3b; margin: 0; line-height: 1.2; }
+.hero-subtitle { font-size: 15px; color: #6b7280; margin: 6px 0 0 0; }
+.status-badge { display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; color: #059669; font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 999px; margin-top: 12px; border: 1px solid #a7f3d0; }
+.status-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); animation: pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+.stepper-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; position: relative; padding: 0 10px; }
+.stepper-line { position: absolute; top: 14px; left: 20px; right: 20px; height: 2px; background: #e5e7eb; z-index: 1; }
+.step-item { position: relative; z-index: 2; display: flex; flex-direction: row; align-items: center; gap: 10px; background: #f8fafc; padding: 0 10px; }
+.step-circle { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid #e5e7eb; background: #ffffff; color: #9ca3af; transition: all 0.3s ease; }
+.step-label { font-size: 14px; font-weight: 600; color: #9ca3af; }
+.step-item.active .step-circle { border-color: #059669; background: #059669; color: #ffffff; box-shadow: 0 0 0 4px #ecfdf5; }
+.step-item.active .step-label { color: #064e3b; }
+.step-item.completed .step-circle { border-color: #059669; background: #ffffff; color: #059669; }
+.step-item.completed .step-label { color: #059669; }
+
+.section-wrapper { background: #ffffff; border-radius: 16px; padding: 32px; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px; }
+.section-header { margin-bottom: 24px; }
+.section-title { font-size: 18px; font-weight: 700; color: #064e3b; margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px; }
+.section-caption { font-size: 14px; color: #6b7280; margin: 0; }
+
+[data-testid="stFileUploadDropzone"] { background-color: #f9fafb !important; border: 2px dashed #cbd5e1 !important; border-radius: 12px !important; padding: 40px 20px !important; transition: all 0.2s ease; }
+[data-testid="stFileUploadDropzone"]:hover { border-color: #059669 !important; background-color: #ecfdf5 !important; }
+.stTextInput input { border-radius: 8px !important; border: 1px solid #d1d5db !important; padding: 12px 16px !important; font-size: 14px !important; box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.stTextInput input:focus { border-color: #059669 !important; box-shadow: 0 0 0 3px #d1fae5 !important; }
+.stButton button[kind="primary"] { background-color: #059669 !important; color: white !important; border-radius: 8px !important; font-weight: 600 !important; padding: 10px 24px !important; border: none !important; transition: transform 0.1s ease, background-color 0.2s ease !important; }
+.stButton button[kind="primary"]:hover { background-color: #047857 !important; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2); }
+[data-testid="stMetricValue"] { font-weight: 800 !important; color: #064e3b !important; }
+</style>"""
 
 def render_sidebar_brand():
-    return """
-    <div class="kua-brand">
-        <div class="kua-brand-mark">▤</div>
-        <p class="kua-brand-title">KUA DIGITAL ARCHIVE</p>
-        <p class="kua-brand-subtitle">Sistem Digitalisasi Arsip Nikah</p>
-    </div>
-    """
+    return """<div class="sidebar-brand">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4h16v16H4V4zm2 4v2h12V8H6zm0 4v2h12v-2H6zm0 4v2h8v-2H6z"/>
+</svg>
+<div>
+<div class="sidebar-brand-text">KUA DIGITAL ARCHIVE</div>
+<div class="sidebar-brand-sub">Sistem Digitalisasi Nikah</div>
+</div>
+</div>"""
 
 def render_user_profile(name):
-    return f"""
-    <div class="kua-profile">
-        <div class="kua-avatar">{str(name)[:1].upper()}</div>
-        <div><p class="kua-profile-name">{name}</p><p class="kua-profile-status">Petugas KUA <span class="kua-online">● Online</span></p></div>
-    </div>
-    """
+    initial = name[0].upper() if name else "A"
+    return f"""<div class="sidebar-profile">
+<div class="profile-avatar">{initial}</div>
+<div class="profile-info">
+<span class="profile-name">{name}</span>
+<span class="profile-role">
+<div class="online-dot"></div> Admin Sistem
+</span>
+</div>
+</div>"""
 
-def render_stepper(current_step=1):
-    # Fungsi kecil untuk menentukan apakah kelas 'active' perlu ditambahkan
-    def active_cls(step):
-        return " active" if current_step >= step else ""
+def render_header(img_base64=""):
+    logo_html = f'<img src="data:image/png;base64,{img_base64}" width="100" style="opacity: 0.9;">' if img_base64 else ""
+    return f"""<div class="hero-card">
+<div class="hero-content-left">
+<div class="hero-icon-box">
+<svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+</svg>
+</div>
+<div>
+<h1 class="hero-title">Digitalisasi Arsip Akta Nikah KUA</h1>
+<p class="hero-subtitle">Sistem digital untuk pencocokan arsip nikah dengan data Excel dan Google Drive.</p>
+<div class="status-badge">
+<div class="status-dot"></div> Sistem aktif dan siap digunakan
+</div>
+</div>
+</div>
+{logo_html}
+</div>"""
 
-    # Menggunakan CSS Stepper dari desainmu secara dinamis
-    return f"""
-    <div class="kua-stepper">
-        <div class="kua-step{active_cls(1)}"><span class="kua-step-number">01</span><span>Upload Data</span></div>
-        <span class="kua-step-line"></span>
-        <div class="kua-step{active_cls(2)}"><span class="kua-step-number">02</span><span>Pencocokan</span></div>
-        <span class="kua-step-line"></span>
-        <div class="kua-step{active_cls(3)}"><span class="kua-step-number">03</span><span>Review</span></div>
-        <span class="kua-step-line"></span>
-        <div class="kua-step{active_cls(4)}"><span class="kua-step-number">04</span><span>Selesai</span></div>
-    </div>
-    """
-
-def render_header():
-    return """
-    <div class="kua-banner"><div class="kua-hero-mark">▤</div><div><p class="kua-eyebrow">KUA Digital Service</p><h1 class="kua-title">Digitalisasi Arsip Akta Nikah KUA</h1><p class="kua-subtitle">Sistem digital untuk pencocokan arsip nikah dengan data Excel dan Google Drive.</p><p class="kua-status">Sistem aktif dan siap digunakan</p></div></div>
-    """
+def render_stepper(current_step):
+    steps = [
+        {"num": "01", "label": "Upload Data"},
+        {"num": "02", "label": "Pencocokan"},
+        {"num": "03", "label": "Review"},
+        {"num": "04", "label": "Selesai"}
+    ]
+    
+    html = '<div class="stepper-container"><div class="stepper-line"></div>'
+    for i, step in enumerate(steps):
+        step_val = i + 1
+        status_class = ""
+        if step_val == current_step:
+            status_class = "active"
+        elif step_val < current_step:
+            status_class = "completed"
+            
+        html += f'<div class="step-item {status_class}"><div class="step-circle">{step["num"]}</div><div class="step-label">{step["label"]}</div></div>'
+    
+    html += '</div>'
+    return html
 
 def render_divider():
-    return '<div class="kua-divider"></div>'
+    return '<hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 32px 0;">'
 
-def render_metrics(tot_data, tot_match, tot_notfound, tot_ambigu):
-    return f"""
-    <div class="kua-grid"><div class="kua-card"><div class="kua-accent-slate"></div><p class="kua-metric-title text-slate">Total Data</p><p class="kua-metric-val">{tot_data}</p></div><div class="kua-card"><div class="kua-accent-green"></div><p class="kua-metric-title text-green">Matched</p><p class="kua-metric-val">{tot_match}</p></div><div class="kua-card"><div class="kua-accent-red"></div><p class="kua-metric-title text-red">Not Found</p><p class="kua-metric-val">{tot_notfound}</p></div><div class="kua-card"><div class="kua-accent-yellow"></div><p class="kua-metric-title text-yellow">Ambiguous</p><p class="kua-metric-val">{tot_ambigu}</p></div></div>
-    """
+def render_metrics(tot, match, notfound, ambigu):
+    return ""

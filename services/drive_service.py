@@ -3,7 +3,6 @@ import json
 import streamlit as st
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from google.oauth2.service_account import Credentials
 
 def get_drive_service():
     """Menghubungkan ke Google Drive (Bisa untuk Lokal maupun Internet)"""
@@ -15,18 +14,18 @@ def get_drive_service():
             creds_dict = json.loads(st.secrets["google_credentials"])
             creds = service_account.Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
             
-        # 2. JIKA BERJALAN DI LAPTOP (Membaca file credentials.json)
+        # 2. JIKA BERJALAN DI LAPTOP (Membaca file credentials.json fisik)
         else:
-            google_secrets = st.secrets["google_drive"].to_dict()
-            creds = Credentials.from_service_account_info(google_secrets, scopes=SCOPES)
+            # KUNCI PERBAIKAN: Langsung tembak ke file credentials.json yang ada di folder
+            creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=SCOPES)
             
         service = build('drive', 'v3', credentials=creds)
         return service
     
     except Exception as e:
         st.error(f"Error aslinya: {e}")
-        st.error("Gagal terhubung ke Google Drive. Periksa 'credentials.json'.")
-        
+        st.error("Gagal terhubung ke Google Drive. Pastikan file 'credentials.json' ada di folder yang sama dengan app.py.")
+        return None
 
 def get_folder_id_by_name(service, folder_name):
     query = f"mimeType='application/vnd.google-apps.folder' and name='{folder_name}' and trashed=false"
