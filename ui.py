@@ -78,6 +78,7 @@ def render_user_profile(name):
 </div>
 </div>"""
 
+# INI BAGIAN YANG TADI TERLEWAT: render_header sekarang SIAP menerima img_base64
 def render_header(img_base64=""):
     logo_html = f'<img src="data:image/png;base64,{img_base64}" width="100" style="opacity: 0.9;">' if img_base64 else ""
     return f"""<div class="hero-card">
