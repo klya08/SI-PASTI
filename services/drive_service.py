@@ -5,26 +5,38 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 def get_drive_service():
-    """Menghubungkan ke Google Drive (Bisa untuk Lokal maupun Internet)"""
+    """Menghubungkan ke Google Drive (Pintar mendeteksi Lokal vs Internet)"""
     SCOPES = ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/drive.metadata.readonly']
     
     try:
-        # 1. JIKA BERJALAN DI INTERNET (Membaca brankas rahasia Streamlit Secrets)
-        if "google_credentials" in st.secrets:
-            creds_dict = json.loads(st.secrets["google_credentials"])
+        creds = None
+        
+        # 1. CEK LOKAL: Cek apakah ada file fisik 'credentials.json' di laptop
+        if os.path.exists('credentials.json'):
+            creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=SCOPES)
+        
+        # 2. CEK INTERNET: Jika file tidak ada, ambil dari brankas rahasia Streamlit Cloud
+        elif "google_drive" in st.secrets:
+            google_secrets = st.secrets["google_drive"].to_dict()
+            creds = service_account.Credentials.from_service_account_info(google_secrets, scopes=SCOPES)
+            
+        elif "google_credentials" in st.secrets:
+            try:
+                creds_dict = json.loads(st.secrets["google_credentials"])
+            except:
+                creds_dict = st.secrets["google_credentials"].to_dict()
             creds = service_account.Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
             
-        # 2. JIKA BERJALAN DI LAPTOP (Membaca file credentials.json fisik)
         else:
-            # KUNCI PERBAIKAN: Langsung tembak ke file credentials.json yang ada di folder
-            creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=SCOPES)
+            st.error("Kunci rahasia Google Drive tidak ditemukan di Streamlit Cloud!")
+            return None
             
         service = build('drive', 'v3', credentials=creds)
         return service
     
     except Exception as e:
         st.error(f"Error aslinya: {e}")
-        st.error("Gagal terhubung ke Google Drive. Pastikan file 'credentials.json' ada di folder yang sama dengan app.py.")
+        st.error("Gagal terhubung ke Google Drive.")
         return None
 
 def get_folder_id_by_name(service, folder_name):
